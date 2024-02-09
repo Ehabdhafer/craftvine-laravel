@@ -1,8 +1,9 @@
 import React from "react";
 import notFound from "../../Images/404.png";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const NotFound = () => {
+  const navigate = useNavigate();
   return (
     <>
       <div className="flex flex-col gap-8 justify-center items-center">
@@ -17,11 +18,11 @@ const NotFound = () => {
           <p className="text-gray-800">
             We suggest you go to Home page while we fix the problem!!
           </p>
-          <Link to="/" className="w-full md:w-auto">
-            <button className="w-full md:w-auto border rounded-full py-3 px-10 text-center bg-teal-600 text-white hover:bg-teal-700 focus:outline-none">
-              Go Back!
-            </button>
-          </Link>
+          <button
+            onClick={() => navigate(-1)}
+            className="w-full md:w-auto border rounded-full py-3 px-10 text-center bg-teal-600 text-white hover:bg-teal-700 focus:outline-none">
+            Go Back!
+          </button>
         </div>
       </div>
     </>

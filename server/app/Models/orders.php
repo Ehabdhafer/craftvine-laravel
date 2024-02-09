@@ -46,8 +46,9 @@ class orders extends Model
     protected static function allorders()
     {
         try {
-            return self::where('is_deleted', false)
-                ->get();
+            return self::where('orders.is_deleted', false)
+                ->join('users', 'orders.user_id', 'users.user_id')
+                ->get(['orders.*', 'users.username']);
         } catch (Exception $e) {
             throw $e;
         }

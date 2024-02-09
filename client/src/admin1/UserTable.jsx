@@ -32,7 +32,7 @@ const UserTable = () => {
     <div className="lg:ml-72 m-4 my-8 lg:mx-8">
       <div className="flex flex-col">
         <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
-          <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+          <div className="inline-block min-w-full py-2 sm:px-6">
             <div className="overflow-hidden">
               <table className="min-w-full text-left text-sm font-light">
                 <thead className="border-b bg-white font-medium dark:border-neutral-500 dark:bg-neutral-600">
@@ -67,10 +67,10 @@ const UserTable = () => {
                       <td className="whitespace-nowrap px-6 py-2">
                         <button
                           onClick={() => removeuser(user.user_id)}
-                          className="p-3 bg-gray-50 border-teal-600 ml-4 border font-bold text-white  rounded-md"
+                          className="p-3 bg-gray-50 border-teal-600 ml-4 border font-bold rounded-md"
                         >
                           <svg
-                            class="w-10 h-10"
+                            class="w-6 h-6"
                             xmlns="http://www.w3.org/2000/svg"
                             width="24"
                             height="24"

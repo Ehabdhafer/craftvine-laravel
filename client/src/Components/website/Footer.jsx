@@ -1,12 +1,12 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, matchPath } from "react-router-dom";
 import logo from '../../Images/logo.png'
 
 const Footer = () => {
   const user = null;
   // const user = "hello"
   const location = useLocation();
-  if(location.pathname == '/login' || location.pathname == '/signup'){
+  if(location.pathname == '/login' || location.pathname == '/signup' || matchPath("/admin/*",location.pathname)){
     return null;
   }
 

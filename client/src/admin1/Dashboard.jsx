@@ -6,7 +6,7 @@ import OrdersTable from "./OrdersTable";
 
 const Dashboard = () => {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen w-full">
       <Statistics />
       <UserTable />
       <ProductForm />

@@ -20,6 +20,11 @@ import ProductSection from "./Pages/Detail";
 import CheckoutComponent from "./Pages/Payment";
 import { AuthProvider } from "./hooks/Authcontext";
 import AccountAdmin from "./admin1/AccountAdmin";
+import Products from "./admin1/Pages/Products";
+import OrdersTable from "./admin1/OrdersTable";
+import Dashboard from "./admin1/Dashboard";
+import User from "./admin1/Pages/User";
+import Reviews from "./admin1/Pages/Reviews";
 
 function App() {
   return (
@@ -44,7 +49,13 @@ function App() {
               <Route path="/product/:id" element={<ProductSection />} />
               <Route path="/payment" element={<CheckoutComponent />} />
               <Route path="/cart" element={<ProductSection />} />
-              <Route path="/dashboard" element={<AccountAdmin />} />
+              <Route path="/admin" element={<AccountAdmin />} >
+                <Route path="dashboard" element={<Dashboard />} />
+                <Route path="users" element={<User />} />
+                <Route path="products" element={<Products />} />
+                <Route path="orders" element={<OrdersTable />} />
+                <Route path="reviews" element={<Reviews />} />
+              </Route>
             </Routes>
           </div>
           <Footer />

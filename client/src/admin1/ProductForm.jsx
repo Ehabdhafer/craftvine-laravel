@@ -1,155 +1,124 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const ProductForm = ({ isOpen, onSubmit, initialProduct, onClose }) => {
-  const [formData, setFormData] = useState({
-    productName: "",
-    description: "",
-    price: "",
-    category: "",
-    quantity: "",
-    imageFile: null,
-  });
-
-  useEffect(() => {
+const OrdersTable = () => {
+  const [users, setUsers] = useState([]);
+  async function fetchUsers() {
     axios
       .get("http://localhost:8000/All_products")
       .then((response) => {
-        setFormData(response.data);
-        // console.log("ff", response.data);
+        setUsers(response.data);
+        // console.log("us", response.data);
       })
       .catch((error) => {
         console.error("Error:", error);
       });
-  }, []);
-
+  }
   useEffect(() => {
-    if (isOpen && initialProduct) {
-      setFormData(initialProduct);
-    }
-  }, [isOpen, initialProduct]);
+    fetchUsers();
+  }, [1]);
 
-  const handleChange = (e) => {
-    const { name, value, type, files } = e.target;
-    setFormData({
-      ...formData,
-      [name]: type === "file" ? files[0] : value,
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSubmit(formData);
-    setFormData({
-      productName: "",
-      description: "",
-      price: "",
-      category: "",
-      quantity: "",
-      imageFile: null,
-    });
-    onClose();
-  };
-
-  const inputStyle = {
-    width: "100%",
-    padding: "8px",
-    marginBottom: "10px",
-    border: "1px solid #ccc",
-    borderRadius: "4px",
-    fontSize: "14px",
-  };
-
-  const buttonStyle = {
-    backgroundColor: "#0000FF",
-    color: "white",
-    padding: "10px 20px",
-    border: "none",
-    borderRadius: "4px",
-    cursor: "pointer",
-    fontSize: "16px",
-  };
+  async function removeuser(product_id) {
+    axios
+      .put("http://localhost:8000/deleteproduct", { product_id })
+      .then((response) => {
+        fetchUsers();
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
 
   return (
-    <div className={`modal ${isOpen ? "visible" : "hidden"}`}>
-      <div className="modal-content">
-        <button className="close-button" onClick={onClose}>
-          Close
-        </button>
-        <form onSubmit={handleSubmit}>
-          <label>
-            Product Name:
-            <input
-              type="text"
-              name="productName"
-              value={formData.product_name}
-              onChange={handleChange}
-              style={inputStyle}
-              required
-            />
-          </label>
-          <label>
-            Description:
-            <textarea
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              style={{ ...inputStyle, height: "100px" }}
-              required
-            />
-          </label>
-          <label>
-            Price:
-            <input
-              type="number"
-              name="price"
-              value={formData.price}
-              onChange={handleChange}
-              style={inputStyle}
-              step="0.01"
-              required
-            />
-          </label>
-          <label>
-            Category:
-            <input
-              type="text"
-              name="category"
-              value={formData.category}
-              onChange={handleChange}
-              style={inputStyle}
-              required
-            />
-          </label>
-          <label>
-            Quantity:
-            <input
-              type="number"
-              name="quantity"
-              value={formData.quantity}
-              onChange={handleChange}
-              style={inputStyle}
-              required
-            />
-          </label>
-          <label>
-            Upload Image:
-            <input
-              type="file"
-              name="imageFile"
-              onChange={handleChange}
-              style={inputStyle}
-              accept="image/*"
-              required
-            />
-          </label>
-          <button type="submit" style={buttonStyle}>
-            Add Product
-          </button>
-        </form>
+    <div className="w-full">
+      <div className="lg:ml-72 m-4 my-8 lg:mx-8">
+        <div className="flex flex-col">
+          <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+              <div className="overflow-hidden">
+                <table className="min-w-full text-left text-sm font-light">
+                  <thead className="border-b bg-white font-medium dark:border-neutral-500 dark:bg-neutral-600">
+                    <tr>
+                      <th scope="col" className="px-6 py-2">
+                        Image
+                      </th>
+                      <th scope="col" className="px-6 py-2">
+                        #
+                      </th>
+                      <th scope="col" className="px-6 py-2">
+                        Product Name
+                      </th>
+                      <th scope="col" className="px-6 py-2">
+                        QUANTITY
+                      </th>
+                      <th scope="col" className="px-6 py-2">
+                        PRICE
+                      </th>
+                      <th scope="col" className="px-6 py-2">
+                        Status
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {users.map((user, id) => (
+                      <tr className="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-700">
+                        <td className="whitespace-nowrap px-6 py-2">
+                          <img
+                            className={`rounded-full w-1/4 ${
+                              user.product_image === null && "hidden"
+                            } border`}
+                            src={user.product_image}
+                            alt="Profile Picture"
+                          />
+                        </td>
+                        <td className="whitespace-nowrap px-6 py-2 font-medium">
+                          {user.product_id}
+                        </td>
+                        <td className="whitespace-nowrap px-6 py-2">
+                          {user.product_name}
+                        </td>
+                        <td className="whitespace-nowrap px-6 py-2">
+                          {user.quantity} PCS
+                        </td>
+                        <td className="whitespace-nowrap px-6 py-2">
+                          {user.price} $
+                        </td>
+
+                        <td className="whitespace-nowrap px-6 py-2">
+                          <button
+                            onClick={() => removeuser(user.product_id)}
+                            className="p-3 bg-gray-50 border-teal-600 ml-4 border font-bold rounded-md"
+                          >
+                            <svg
+                              class="w-6 h-6"
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="24"
+                              height="24"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              {" "}
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                              />{" "}
+                            </svg>
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
 };
 
-export default ProductForm;
+export default OrdersTable;
